@@ -1,7 +1,6 @@
 enable_testing()
 
-add_executable(ExampleTest ExampleTest.c)
-target_link_libraries(ExampleTest ${PROJECT_NAME} Unity)
+add_executable(ExampleTest ExampleTest.cpp)
 
 target_compile_options(ExampleTest PUBLIC
 	"$<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:"

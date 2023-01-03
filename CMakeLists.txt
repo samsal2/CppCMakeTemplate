@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23.1)
 
-project(CCMakeTemplate)
+project(CppCMakeTemplate)
 
 # find external libraries
 # eg.
@@ -10,11 +10,11 @@ project(CCMakeTemplate)
 add_library(${PROJECT_NAME})
 
 # features
-set_target_properties(${PROJECT_NAME}
+set_target_properties(${PROJECT_NAME} 
   PROPERTIES 
-    C_STANDARD          90
-    C_STANDARD_REQUIRED ON
-    C_EXTENSIONS        OFF)
+    CXX_STANDARD          20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS        OFF)
 
 # link libraries
 # eg.
@@ -28,7 +28,7 @@ set_target_properties(${PROJECT_NAME}
 
 # compile options
 target_compile_options(${PROJECT_NAME} PUBLIC
-  "$<$<COMPILE_LANG_AND_ID:C,Clang,AppleClang>:"
+  "$<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:"
     -Wall
     -Wshadow
     -Wextra
@@ -39,20 +39,20 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     -Wvla 
     -fdiagnostics-color=always
   ">"
-  "$<$<AND:$<COMPILE_LANG_AND_ID:C,Clang,AppleClang>,$<CONFIG:Debug>>:"
+  "$<$<AND:$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>,$<CONFIG:Debug>>:"
     -O0
     -g
     -fsanitize=address
     -fsanitize=undefined
     -fsanitize=bounds
   ">"
-  "$<$<AND:$<COMPILE_LANG_AND_ID:C,Clang,AppleClang>,$<CONFIG:Release>>:"
+  "$<$<AND:$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>,$<CONFIG:Release>>:"
     -Ofast
   ">")
 
 # link options
 target_link_options(${PROJECT_NAME} PUBLIC
-  "$<$<AND:$<COMPILE_LANG_AND_ID:C,Clang,AppleClang>,$<CONFIG:Debug>>:"
+  "$<$<AND:$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>,$<CONFIG:Debug>>:"
     -fsanitize=address
     -fsanitize=undefined
     -fsanitize=bounds
@@ -63,7 +63,14 @@ add_subdirectory(Dependencies)
 add_subdirectory(Source)
 add_subdirectory(Tests)
 
-add_executable("${PROJECT_NAME}Main" Source/main.c)
+add_executable("${PROJECT_NAME}Main" Source/main.cpp)
+
+set_target_properties("${PROJECT_NAME}Main"
+  PROPERTIES 
+    CXX_STANDARD          20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS        OFF)
+
 target_link_libraries("${PROJECT_NAME}Main" PRIVATE ${PROJECT_NAME})
 
 
